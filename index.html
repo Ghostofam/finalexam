@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="newstyle.css">
+</head>
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+    grid-gap: 25px; /* Gap between grid items */
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 100px;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    height: 400px;
+  }
+
+  .item img {
+    width:50%;
+    height: 400px;
+    margin-right: 10px;
+  }
+
+  .item-content {
+    flex-grow: 1;
+  }
+
+  .item-content h3 {
+    margin-top: 0;
+  }
+
+
+  .header {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 10px;
+    /* background-color: #f0f0f0; */
+  }
+  a{
+    text-decoration: underline;
+    text-decoration-color: rgb(94, 156, 0);
+    text-underline-offset: 20px;
+    text-decoration-thickness: 3px;
+  }
+
+  a {
+    color: black;
+}
+  @media screen and (max-width: 768px) {
+
+    .item {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    height: auto;
+    padding-bottom: 20px;
+    flex-direction: column;
+}
+
+
+.item img {
+    width:100%;
+    height: auto;
+    margin-right: 0px;
+    margin-bottom: 20px;
+  }
+
+  .item-content {
+    padding: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-top: 100px;
+}
+
+  }
+
+
+
+</style>
+<body>
+  <header>
+    <div class="menu">
+      <a href="#">Home</a>
+      <a href="registration.html">Registration</a>
+      <a href="record.html">Records</a>
+      <a href="#">About</a>
+    </div>
+    <button class="header-button">Name</button>
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </header>
+  
+  <div class="grid-container" id="newsContainer">
+    <!-- Data will be added here dynamically -->
+  </div>
+
+  <script>
+    // Function to fetch data from the API and update the HTML
+    function fetchNewsData() {
+      const apiKey = "f7d54802ae9d4e2eb6b90d6e456b63ee";
+      const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${apiKey}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const articles = data.articles;
+          const newsContainer = document.getElementById("newsContainer");
+
+          // Clear existing content in the container
+          newsContainer.innerHTML = "";
+
+          // Loop through the articles and create grid items for each
+          articles.forEach(article => {
+            const newsItem = document.createElement("div");
+            newsItem.classList.add("item");
+            newsItem.innerHTML = `
+              <img src="${article.urlToImage}" alt="News Image">
+              <div class="item-content">
+                <h3>${article.title}</h3>
+                <p>${article.description}</p>
+                <a href="${article.url}" target="_blank">Read More</a>
+              </div>
+            `;
+            newsContainer.appendChild(newsItem);
+          });
+        })
+        .catch(error => console.error("Error fetching news data:", error));
+    }
+
+    // Fetch data on page load
+    fetchNewsData();
+  </script>
+  
+  <div id="data-container"></div>
+  <script src="script.js"></script>
+
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-logo">
+        <img src="logo.png" alt="Logo">
+      </div>
+      <div class="footer-quicklinks">
+        <h4>Quicklinks</h4>
+        <ul>
+          <li><a class="footerlinks" href="#">Home</a></li>
+          <li><a class="footerlinks" href="#">About Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-travel-promo">
+        <h4></h4>
+        <ul>
+            <li><a class="footerlinks" href="#">Travel</a></li>
+            <li><a class="footerlinks" href="#">Promo</a></li>
+          </ul>
+      </div>
+      <div class="footer-recommendation-guides">
+        <h4></h4>
+        <ul>
+            <li><a class="footerlinks" href="#">Recommendation</a></li>
+            <li><a class="footerlinks" href="#">Guides</a></li>
+        </ul>
+      </div>
+      <div class="footer-mission-team">
+        <h4></h4>
+        <ul>
+            <li><a class="footerlinks" href="#">Mission Statement</a></li>
+            <li><a class="footerlinks" href="#">The Team</a></li>
+          </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2021 - 2022 My New Website. All Rights Reserved.</p>
+    </div>
+  </footer>
+  
+  <script>
+    function toggleMenu() {
+      const menu = document.querySelector('.menu');
+      const menuToggle = document.querySelector('.menu-toggle');
+      menu.classList.toggle('open');
+      menuToggle.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
